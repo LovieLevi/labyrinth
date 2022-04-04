@@ -1,18 +1,14 @@
 // const { link } = require("fs");
 
-function consol(num1, num2) {
-  consol.log({num1: num2})
-}
-
 game = class{
   layers = {
-    ground2: ocnova([
+    ground: [
       [-219,1,1,1,1],
       [1,1,1,1,1],
       [1,1,1,1,1],
       [1,1,1,1,1],
       [1,1,1,1,-195],
-    ],)
+    ],
 
     // ground: ocnova(this.layers.ground2)
   }
@@ -28,11 +24,13 @@ game = class{
     width:  16,
     height: 16,
   };
-  
-  consol(tile, tile)
 
   // инициализация и запуск игры
   constructor() {
+    console.log('start: conatructor')
+
+    this.layers.ground = ocnova()
+
     const width = 5; // Math.floor(window.innerWidth / this.tile.width);
     const height = 5; // Math.floor(window.innerHeight / this.tile.height);
 
@@ -147,18 +145,27 @@ game = class{
     }
   }
 
-  function ocnova(labirint) {
+  function ocnova() {
+    console.log('start: ocnova')
+    var labirint = [
+      [-219, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1],
+      [1, 1, 1, 1, -195],
+    ]
+
+    var x, y
     var solve = false
-    var y, x, yy, xx
 
     while (!solve) {
       function generation(labirint) {
-        for (var i = 0; i < labirint.lenght; i++) {
-          for (var j = 0; j < labirint[i].lenght; j++) {
+        for (var i = 0; i < labirint.length; i++) {
+          for (var j = 0; j < labirint[i].length; j++) {
             var ran = Math.random()
             var forRan = 0.6
             var res
-
+            
             if (labirint[i][j] == 1) {
               res = 1
             } else if (labirint[i][j] == -194) {
@@ -175,38 +182,41 @@ game = class{
           }
         }
         return(labirint)
-        }
-
-      function lenlabirint(labirint) {
-        for (var i = 0; i < labirint.lenght; i++) {
-          for (var j = 0; j < labirint[i].lenght; j++) {
-            if (labirint[i][j] == -194) {
-              y = i
-              x = j
-            } else if (labirint[i][j] == 1) {
-              yy = i - 1
-              xx = j - 1
-            }
-          }
-        }
-      return(y, x, yy, xx)
       }
 
+      labirint = generation(labirint)
 
-      var labirint2 = labirint
-      y, x, yy, xx = lenlabirint(labirint)
-      console.log({y: y, x: x, yy: yy, xx: xx})
+      console.log('start: lenlabirint', labirint)
+      var x, y;
+      console.log({lenlabirin: labirint.length})
+      for (var ii = 0; ii < labirint.length; ii++) {
+        // console.log('start: lenlabirin: for: ii')
+        for (var jj = 0; jj < labirint[ii].length; jj++) {
+          // console.log('start: lenlabirin: for: jj')
+          if (labirint[ii][jj] == -195) {
+            y = ii
+            x = jj
+            console.log({x: x, y: y})
+          }
+        }
+      }
+
+      var y = 4
+      var x = 4
+
+      console.log({y: y, x: x})
       solve = true
       var iscomoe = 1
-      while (labirint[4][4] == -195) {
+      console.log('start: prohogdenie')
+      while (labirint[y][x] == -195) {
         var found = false
-        for (var i = 0; i < labirint.lenght; i++) {
-          for (var j = 0; i < labirint[i].lenght; j++) {
+        for (var i = 0; i < labirint.length; i++) {
+          for (var j = 0; i < labirint[i].length; j++) {
             if (labirint[i][j] == iscomoe) {
                 if (i > 0 && (labirint[i - 1] [j] == 0 || labirint[i - 1][j] == -195)) {
                   labirint[i -1][j] = iscomoe + 1
                 }
-                if (i < labirint.lenght - 1 && (labirint[i + 1][j] == 0 || labirint[i + 1][j] == -195)) {
+                if (i < labirint.length - 1 && (labirint[i + 1][j] == 0 || labirint[i + 1][j] == -195)) {
                   labirint[i + 1][j] = iscomoe + 1
                   found = true
                 }
@@ -214,7 +224,7 @@ game = class{
                   labirint[i][j - 1] = iscomoe + 1
                   found = true
                 }
-                if (j < labirint[i].lenght - 1 && (labirint[i][j + 1] == 0 || labirint[i][j + 1] == -195)) {
+                if (j < labirint[i].length - 1 && (labirint[i][j + 1] == 0 || labirint[i][j + 1] == -195)) {
                   labirint[i][j + 1] = iscomoe + 1
                   found = true
                 }
@@ -229,11 +239,12 @@ game = class{
             solve = false  
             found2 = true
           }  
+        }
       }
-    }
+      console.log({labirint: labirint})
       if (solve) {
-        for (var i = 0; i < labirint.lenght; i++) {
-          for (var j = 0; i < labirint[i].lenght; j++) {
+        for (var i = 0; i < labirint.length; i++) {
+          for (var j = 0; i < labirint[i].length; j++) {
             labirint[i][j] = Math.abs(labirint[i][j])
           }
         }
