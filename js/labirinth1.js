@@ -1,18 +1,26 @@
-labyrinth = class{
+// const { link } = require("fs");
+
+function consol(num1, num2) {
+  consol.log({num1: num2})
+}
+
+game = class{
   layers = {
-    ground: [
+    ground2: ocnova([
       [-219,1,1,1,1],
       [1,1,1,1,1],
       [1,1,1,1,1],
       [1,1,1,1,1],
       [1,1,1,1,-195],
-    ],
+    ],)
+
+    // ground: ocnova(this.layers.ground2)
   }
 
   // размер карты
   grid = {
-        width:  0,
-        height: 0,
+    width:  0,
+    height: 0,
   };
 
   // размер тайла
@@ -20,9 +28,8 @@ labyrinth = class{
     width:  16,
     height: 16,
   };
-
-  // игрок
-  player;
+  
+  consol(tile, tile)
 
   // инициализация и запуск игры
   constructor() {
@@ -132,67 +139,105 @@ labyrinth = class{
         Crafty.e("2D, Canvas, " + tile).attr({x: this.positionX(x), y: this.positionY(y), z: 0});
       }
     }
-    
-    
-
-    // // рисуем границы карты водой
-    // for (x = 1; x < this.grid.width - 1; x++) {
-    //   Crafty.e("2D, Canvas, water_b, solid").attr({x: this.positionX(x), y: 0, z: 0});
-    //   Crafty.e("2D, Canvas, water_t, solid").attr({x: this.positionX(x), y: this.positionY(this.grid.height - 1), z: 0});
-    // }
-    // for (y = 1; y < this.grid.height - 1; y++) {
-    //   Crafty.e("2D, Canvas, water_r, solid").attr({x: 0, y: this.positionY(y), z: 0});
-    //   Crafty.e("2D, Canvas, water_l, solid").attr({x: this.positionX(this.grid.width - 1), y: this.positionY(y), z: 0});
-    // }
-    // Crafty.e("2D, Canvas, water_tl, solid").attr({x: 0, y: 0, z: 0});
-    // Crafty.e("2D, Canvas, water_tr, solid").attr({x: this.positionX(this.grid.width - 1), y: 0, z: 0});
-    // Crafty.e("2D, Canvas, water_bl, solid").attr({x: 0, y: this.positionY(this.grid.height - 1), z: 0});
-    // Crafty.e("2D, Canvas, water_br, solid").attr({x: this.positionX(this.grid.width - 1), y: this.positionY(this.grid.height - 1), z: 0});
   }
 
   // главный экран игры
   screenMain() {
-    this.generateWorld();
-
-    // создаём игрока
-    // this.player = Crafty.e("2D, DOM, player, Multiway, SpriteAnimation, Collision")
-    //   .attr({x: this.positionX(5), y: this.positionY(5), z: 1})
-    //   .multiway(100, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180}, {"multipleDirectionBehavior": "last"})
-
-    //   // настраиваем анимации
-    //   .reel("walk_down",  500, [[0, 0], [1, 0], [2, 0], [3, 0]])
-    //   .reel("walk_up",    500, [[0, 1], [1, 1], [2, 1], [3, 1]])
-    //   .reel("walk_right", 500, [[0, 2], [1, 2], [2, 2], [3, 2]])
-    //   .reel("walk_left",  500, [[0, 3], [1, 3], [2, 3], [3, 3]])
-    //   .bind("NewDirection", function (direction) {
-    //     // меняем направление, когда получим событие "смена направления"
-    //     if (direction.x < 0) {
-    //       if (!this.isPlaying("walk_left"))
-    //         this.animate("walk_left", -1);
-    //     }
-    //     if (direction.x > 0) {
-    //       if (!this.isPlaying("walk_right"))
-    //         this.animate("walk_right", -1);
-    //     }
-    //     if (direction.y < 0) {
-    //       if (!this.isPlaying("walk_up"))
-    //         this.animate("walk_up", -1);
-    //     }
-    //     if (direction.y > 0) {
-    //       if (!this.isPlaying("walk_down"))
-    //         this.animate("walk_down", -1);
-    //     }
-    //     if (!direction.x && !direction.y) {
-    //       this.pauseAnimation();
-    //     }
-    //   })
-    //   .bind("Move", function(evt) {
-    //     // не даём пройти через препятствия
-    //     if (this.hit('solid')) {
-    //       this.x = evt._x;
-    //       this.y = evt._y;
-    //     }
-    //   });
-  
+    this.generateWorld();  
     }
   }
+
+  function ocnova(labirint) {
+    var solve = false
+    var y, x, yy, xx
+
+    while (!solve) {
+      function generation(labirint) {
+        for (var i = 0; i < labirint.lenght; i++) {
+          for (var j = 0; j < labirint[i].lenght; j++) {
+            var ran = Math.random()
+            var forRan = 0.6
+            var res
+
+            if (labirint[i][j] == 1) {
+              res = 1
+            } else if (labirint[i][j] == -194) {
+              res = -3
+            } else {
+              if (ran >= forRan) {
+                res = -1
+              } else {
+                res = 0
+              }
+            }
+
+            labirint[i][j] = res
+          }
+        }
+        return(labirint)
+        }
+
+      function lenlabirint(labirint) {
+        for (var i = 0; i < labirint.lenght; i++) {
+          for (var j = 0; j < labirint[i].lenght; j++) {
+            if (labirint[i][j] == -194) {
+              y = i
+              x = j
+            } else if (labirint[i][j] == 1) {
+              yy = i - 1
+              xx = j - 1
+            }
+          }
+        }
+      return(y, x, yy, xx)
+      }
+
+
+      var labirint2 = labirint
+      y, x, yy, xx = lenlabirint(labirint)
+      console.log({y: y, x: x, yy: yy, xx: xx})
+      solve = true
+      var iscomoe = 1
+      while (labirint[4][4] == -195) {
+        var found = false
+        for (var i = 0; i < labirint.lenght; i++) {
+          for (var j = 0; i < labirint[i].lenght; j++) {
+            if (labirint[i][j] == iscomoe) {
+                if (i > 0 && (labirint[i - 1] [j] == 0 || labirint[i - 1][j] == -195)) {
+                  labirint[i -1][j] = iscomoe + 1
+                }
+                if (i < labirint.lenght - 1 && (labirint[i + 1][j] == 0 || labirint[i + 1][j] == -195)) {
+                  labirint[i + 1][j] = iscomoe + 1
+                  found = true
+                }
+                if (j > 0 && (labirint[i][j - 1] == 0 || labirint[i][j - 1] == -195)) {
+                  labirint[i][j - 1] = iscomoe + 1
+                  found = true
+                }
+                if (j < labirint[i].lenght - 1 && (labirint[i][j + 1] == 0 || labirint[i][j + 1] == -195)) {
+                  labirint[i][j + 1] = iscomoe + 1
+                  found = true
+                }
+            }
+          }
+        }
+
+        iscomoe += 1
+        var found2 = false
+        while (found2) {
+          if (!found) {
+            solve = false  
+            found2 = true
+          }  
+      }
+    }
+      if (solve) {
+        for (var i = 0; i < labirint.lenght; i++) {
+          for (var j = 0; i < labirint[i].lenght; j++) {
+            labirint[i][j] = Math.abs(labirint[i][j])
+          }
+        }
+        return(labirint)
+      }
+    }
+}
